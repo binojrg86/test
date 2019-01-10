@@ -1,0 +1,382 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="CarCare.HomeTest" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    
+    <form id="form1" runat="server">
+        <div>
+            <div class="navabr-top" id="dvTopHead" runat="server">
+                <div class="container">
+                    <div class="col-md-12">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="register-log">
+                                <asp:LinkButton ID="lnkRegister" runat="server" Text="register" OnClick="lnkRegister_Click"></asp:LinkButton></li>
+                            <li class="register-log">
+                                <asp:LinkButton ID="lnkLogin" runat="server" Text="log in" OnClick="lnkLogin_Click"></asp:LinkButton></li>
+
+                            <li id="liMyAcc" class="dropdown" runat="server" visible="false"><a href="myaccount"><span class="glyphicon glyphicon-user"></span>my account</a>
+                                <ul class="dropdown-content">
+
+                                    <li>
+                                        <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" Text="Logout"></asp:LinkButton></li>
+                                </ul>
+                            </li>
+                            <li><a href="myaccount"><span class="glyphicon glyphicon-heart"></span>wish list
+                                 <asp:Label ID="lblWhishlistCnt" runat="server"></asp:Label></a></li>
+                            <li><a href="cart"><span class="glyphicon glyphicon-shopping-cart"></span>cart
+                                <asp:Label ID="lblcarthead" runat="server"></asp:Label></a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-logo">
+                <div class="container-fluid">
+                    <div class="col-md-3">
+                        <div class="logo pull-left">
+                            <a href="#">
+                                <img src="images/header/logo.png" alt="home"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="search-in-btn">
+
+                            <div class="col-xs-12 col-md-12">
+                                <div class="input-group">
+                                    <%--<input type="text" list="tyres" id="autocomplete" class="form-control" placeholder="Search for Products, Brands and More" id="txtSearch" />--%>
+
+                                    <asp:TextBox ID="txtSearch" runat="server" AutoPostBack="true" OnTextChanged="txtSearch_TextChanged" placeholder="Search for Products, Brands and More" CssClass="form-control"></asp:TextBox>
+                                    <asp:AutoCompleteExtender ServiceMethod="SearchCategory"
+                                        ServicePath="~/Home.aspx"
+                                        MinimumPrefixLength="1"
+                                        EnableCaching="true"
+                                        CompletionSetCount="1"
+                                        CompletionInterval="1000"
+                                        TargetControlID="txtSearch"
+                                        ID="AutoCompleteExtender1" runat="server">
+                                    </asp:AutoCompleteExtender>
+
+                                    <div class="input-group-btn search-all">
+                                        <%--<button class="btn btn-primary search-all" type="submit">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>--%>
+
+                                        <asp:ImageButton ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="search-btn" ImageUrl="~/images/search-btn.png"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="call-icon pull-right">
+                            <p>ROAD SIDE ASSIST 24/ 7 : 080-XXX-XXXX</p>
+                            <img src="images/header/car-call.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-main">
+                <nav class="navbar navbar-inverse">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+                            <div class="collapse navbar-collapse" id="myNavbar">
+                                <ul class="nav navbar-nav">
+
+                                    <asp:DataList ID="dlMainCategory" runat="server" RepeatDirection="Horizontal" OnItemCommand="dlMainCategory_ItemCommand">
+                                        <ItemTemplate>
+                                            <li>
+
+                                                <span>
+                                                    <asp:ImageButton ID="imgmainCategory" runat="server"
+                                                        ImageUrl='<%# Bind("ProdMasterCategory_Thumb", "~/images/main-category/menu/{0}") %>' CommandName="MainCategory" CommandArgument='<%# Eval("ProdMasterCategory_IDPK") %>' />
+                                                </span>
+
+                                                <asp:LinkButton ID="lnkMainCategoryName" runat="server" ForeColor="White"
+                                                    Text='<%# Eval("ProdMasterCategory_Name") %>' CommandName="MainCategory" CommandArgument='<%# Eval("ProdMasterCategory_IDPK") %>' />
+
+                                            </li>
+                                        </ItemTemplate>
+                                    </asp:DataList>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!--login-form and sign up form-->
+            <div class="login-signup">
+                <div class="modal fade" id="loginmodal" runat="server">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div id="loginform" style="display: block;" runat="server">
+                                <div class="modal-header">
+                                    <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                                    <asp:Button ID="btnclose" runat="server" Text="&times;" OnClick="btnclose_Click" CssClass="close" />
+                                    <h4 class="modal-title">Login</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <asp:Panel ID="Panel1" runat="server" DefaultButton="btnLogin">
+                                        <div class="form-group">
+                                            <%--<input type="email" class="form-control" id="email" placeholder="Enter Email" name="email">--%>
+                                            <asp:TextBox ID="txtLoginEmail" runat="server" placeholder="Enter Email"
+                                                CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="reqName" ControlToValidate="txtLoginEmail"
+                                                ErrorMessage="*" ForeColor="Red" ValidationGroup="Login" />
+                                            <asp:RegularExpressionValidator ID="validateEmail"
+                                                runat="server" ErrorMessage="Invalid email."
+                                                ControlToValidate="txtLoginEmail" ForeColor="Red"
+                                                ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ValidationGroup="Login"></asp:RegularExpressionValidator>
+                                        </div>
+                                        <div class="form-group password-for">
+                                            <%--<input type="password" class="form-control password-length" id="pwd" placeholder="Enter Password" name="pwd">--%>
+                                            <asp:TextBox ID="txtLoginPwd" TextMode="Password" runat="server" placeholder="Enter Password" CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator1"
+                                                ControlToValidate="txtLoginPwd" ErrorMessage="*" ForeColor="Red" ValidationGroup="Login" />
+
+                                            <div class="forget-password">
+                                                <a href="#" id="forget-password">Forgot?</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="submit-login">
+
+                                            <asp:Button ID="btnLogin" runat="server" Text="Submit" CssClass="btn btn-default submit-log-btn"
+                                                ValidationGroup="Login" OnClick="btnLogin_Click" CausesValidation="false" />
+                                        </div>
+
+                                        <div class="need-register">
+
+                                            <asp:LinkButton ID="lnkNeedReg" runat="server" Text="Sign Up" OnClick="lnkNeedReg_Click"></asp:LinkButton>
+                                        </div>
+                                        <div>
+                                            <asp:Label ID="lblLoginmsg" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                                        </div>
+                                    </asp:Panel>
+                                </div>
+
+                            </div>
+                            <div id="signform" style="display: none" runat="server">
+                                <div class="modal-header">
+                                    <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                                    <asp:Button ID="btnclose1" runat="server" Text="&times;" OnClick="btnclose_Click" CssClass="close" />
+                                    <h4 class="modal-title">sign up</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <asp:Panel ID="Panel2" runat="server" DefaultButton="btnRegister">
+                                        <div class="form-group">
+
+                                            <%--<input type="email" class="form-control" id="name" placeholder="Enter Name" name="name">--%>
+                                            <asp:TextBox ID="txtRegName" runat="server" placeholder="Enter Name"
+                                                CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator2"
+                                                ControlToValidate="txtRegName" ErrorMessage="*" ForeColor="Red" ValidationGroup="Register" />
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2"
+                                                runat="server" ErrorMessage="Invalid name."
+                                                ControlToValidate="txtRegName" ForeColor="Red"
+                                                ValidationExpression="^[a-zA-Z\s]+$" ValidationGroup="Register"></asp:RegularExpressionValidator>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <%--<input type="email" class="form-control" id="email1" placeholder="Enter Email" name="email">--%>
+                                            <asp:TextBox ID="txtRegEmail" runat="server" placeholder="Enter Email"
+                                                CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator3"
+                                                ControlToValidate="txtRegEmail" ErrorMessage="*" ForeColor="Red" ValidationGroup="Register" />
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1"
+                                                runat="server" ErrorMessage="Invalid email."
+                                                ControlToValidate="txtRegEmail" ForeColor="Red"
+                                                ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ValidationGroup="Register"></asp:RegularExpressionValidator>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <%--<input type="password" class="form-control" id="Password1" placeholder="Enter Password" name="pwd">--%>
+                                            <asp:TextBox ID="txtRegPwd" TextMode="Password" runat="server" placeholder="Enter Password"
+                                                CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator4"
+                                                ControlToValidate="txtRegPwd" ErrorMessage="*" ForeColor="Red" ValidationGroup="Register" />
+
+                                        </div>
+
+                                        <div class="submit-login">
+
+                                            <asp:Button ID="btnRegister" runat="server" Text="Submit" CssClass="btn btn-default submit-log-btn" ValidationGroup="Register" CausesValidation="false" OnClick="btnRegister_Click" />
+                                        </div>
+                                        <div class="already-login">
+
+                                            <asp:LinkButton ID="lnkNeedLogin" runat="server" Text="login" OnClick="lnkNeedLogin_Click"></asp:LinkButton>
+                                        </div>
+                                        <div>
+                                            <asp:Label ID="lblRegmsg" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                                        </div>
+                                    </asp:Panel>
+                                </div>
+
+                            </div>
+                            <div id="forgot-form" style="display: none">
+                                <div class="modal-header">
+                                    <asp:Button ID="btnclose2" runat="server" Text="&times;" OnClick="btnclose_Click" CssClass="close" />
+                                    <h4 class="modal-title">Forgot Password</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <asp:Panel ID="Panel3" runat="server" DefaultButton="btnForgot">
+                                        <div class="form-group">
+
+                                            <%--<input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" />--%>
+                                            <asp:TextBox ID="txtForgotEmail" runat="server" placeholder="Enter Email"
+                                                CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator5"
+                                                ControlToValidate="txtForgotEmail" ErrorMessage="*" ForeColor="Red" ValidationGroup="Forgot" />
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator3"
+                                                runat="server" ErrorMessage="Invalid email."
+                                                ControlToValidate="txtForgotEmail" ForeColor="Red"
+                                                ValidationExpression="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$" ValidationGroup="Forgot"></asp:RegularExpressionValidator>
+                                        </div>
+
+
+                                        <div class="submit-login">
+                                            <%--<button type="submit" class="btn btn-default submit-log-btn">Submit</button>--%>
+                                            <asp:Button ID="btnForgot" runat="server" CausesValidation="false" Text="Submit" CssClass="btn btn-default submit-log-btn" ValidationGroup="Forgot" />
+                                        </div>
+                                    </asp:Panel>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <asp:ContentPlaceHolder ID="cpMain" runat="server">
+            </asp:ContentPlaceHolder>
+            <footer id="footer" runat="server">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="contact">
+                                <div class="contact-info">
+                                    <h3>contact info</h3>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true"></i>8901 Marmora Road, Glasgow D04 89 GR, New York</p>
+                                    <p><i class="fa fa-phone" aria-hidden="true"></i>Telephones: +88 01973-833508</p>
+                                    <p><i class="fa fa-envelope" aria-hidden="true"></i>Email: admin@dummy.com </p>
+                                    <div class="social-link">
+                                        <ul>
+                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="our-service">
+                                <h3>our service</h3>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Contact us</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Discount</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Site map</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>About us</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Custom service</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="my-account">
+                                <h3>my account</h3>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>My Account</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Login</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>My Cart</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Wishlist</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Checkout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="tyre-info">
+                                <h3>tyre information</h3>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>How to Buy Tyres</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Tyre Tips and Advice</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Tyre Manufacturers</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Tyre Resources</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Tyre Pressure Guide</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="copy-right">
+                                <p>&copy; Auto Tyre Parts. All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+
+    </form>
+  
+    <script>
+        $(document).ready(function () {
+            function signin() {
+
+                $('#loginform').css({ "display": "none" });
+                $('#signform').css({ "display": "block" });
+                $('#forgot-form').css({ "display": "none" });
+                $('#login-id').one("click", login);
+            }
+            function login() {
+                $('#loginform').css({ "display": "block" });
+                $('#signform').css({ "display": "none" });
+                $('#forgot-form').css({ "display": "none" });
+                $('#register').one("click", signin);
+                $("#forget-password").one("click", forgotin)
+            }
+            function forgotin() {
+
+                $('#loginform').css({ "display": "none" });
+                $('#signform').css({ "display": "none" });
+                $('#forgot-form').css({ "display": "block" });
+
+            }
+            $("#register").one("click", signin);
+            $("#forget-password").one("click", forgotin)
+        });
+    </script>
+    <script>
+        $(window).load(function () {
+            $("#autocomplete").autocomplete({
+                source: ["MRF Tyres", "jk tyres", "Apollo Tyres", "Bridgestone Tyres", "CEAT Tyres", "Goodyear Tyres", "Michelin Tyres"]
+            });
+        });
+    </script>
+
+</body>
+</html>

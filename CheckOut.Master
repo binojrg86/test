@@ -1,0 +1,49 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="CheckOut.master.cs" Inherits="CarCare.CheckOut1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <header>
+                <div class="navbar-logo logo-check">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <div class="logo pull-left">
+                                <a href="home">
+                                    <img src="images/header/logo.png" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <asp:ContentPlaceHolder ID="cpMain" runat="server">
+            </asp:ContentPlaceHolder>
+            <section class="checkout-details">
+                <div class="container">
+                    <div class="row">
+                        <div class="footer-checkout">
+                            <p>Polices:</p>
+                            <ul>
+                                <li><a href="#">Return Policy</a></li>
+                                <li><a href="#">Term of use</a></li>
+                                <li><a href="#">Security</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Infringement</a></li>
+                            </ul>
+                            <p>&copy; 2017, Carecarexpresss.com</p>
+                            <p class="need-help">Need help? <span>Visit the Help</span> <a href="#">Center</a> or <a href="#">Contact Us</a></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</body>
+</html>
